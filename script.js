@@ -1,22 +1,61 @@
 const Ship = (long, damage, sunk) => {
     const hit = () => { damage += 1 }
     const isSunk = () => { if (long === damage) { sunk = true } }
-    const x = () => { 
-        let lengthArray = []
-        let choice = Math.floor(Math.random() * 2)
-        let secondChoice = Math.floor(Math.random() * 3)
-        lengthArray.push(Math.floor(Math.random() * 10) )
-        return lengthArray
-    }
-    const y = () => {
-
-        Math.floor(Math.random() * 10) 
-    }
     const getLong = () => long
     const getDamage = () => damage
     const getSunk = () => sunk
+    const x = (name) => { 
+        let xArray = []
+        let choice = Math.floor(Math.random() * 2)
+        
+        let secondChoice = Math.floor(Math.random() * 2)
+        xArray.push(Math.floor(Math.random() * 10) )
 
-    return { hit, isSunk, getDamage, getLong, getSunk, x, y }
+        
+        
+        if(choice === 0) {
+            return xArray
+        } else {
+            if (secondChoice === 0 && xArray[0] + name.getLong() <= 10) {
+                for(let i = 1; i < name.getLong(); i++) {
+                    xArray.push(xArray[0] + i)
+                }
+            } else if(secondChoice === 1 && xArray[0] - name.getLong() >= -1){
+                for(let i = 1; i < name.getLong(); i++) { 
+                    xArray.push(xArray[0] - i)
+                }
+            }
+        }
+
+        if(xArray[-1] > 10) {
+            return "Error"
+        }
+        
+        return xArray
+    }
+    const getCoordinate = (name) => {
+        let yArray = []
+        let valueOfX = name.x(name)
+        let upOrDown = Math.floor(Math.random() * 2)
+        yArray.push(Math.floor(Math.random() * 10))
+        console.log(valueOfX)
+        if(valueOfX.length === 1) {
+            if(upOrDown === 0 && yArray[0] + name.getLong() <= 10) {
+                for(let i = 1; i < name.getLong(); i++) {
+                    yArray.push(yArray[0] + i)
+                }
+            } else if (upOrDown === 1 && yArray[0] - name.getLong() >= -1) {
+                for(let i = 1; i < name.getLong(); i++) {
+                    yArray.push(yArray[0] - i)
+                }
+            }
+        } else {
+            return yArray
+        }
+        return yArray
+    }
+    
+    return { hit, isSunk, getDamage, getLong, getSunk, getCoordinate, x } 
 }
 
 const Gameboard = (size) => {
@@ -33,4 +72,4 @@ const Gameboard = (size) => {
 
 
 const smallShip = Ship(4, 0, false)
-console.log(smallShip.x())
+console.log(smallShip.getCoordinate(smallShip))
