@@ -12,8 +12,6 @@ const Ship = (long, damage, sunk) => {
         
         let secondChoice = Math.floor(Math.random() * 2)
         xArray.push(Math.floor(Math.random() * 10) )
-
-        
         
         if(choice === 0) {
             return xArray
@@ -72,26 +70,53 @@ const Gameboard = (size) => {
         }
     }
 
-    const checkForDuplicates = (array) => {
-        let xArrayOne = []
-        let yArray = []
-
+    const isDuplicate = (array) => {
         let xArray = []
-        let yArrayOne = []
+        let yArray = []
+        let testArrayX = []
+        let testArrayY = []
+        let tryAgain = []
 
         for(let i = 0; i < array.length; i++) {
-            
-            if(array[i][0].length === 1) {
-                xArrayOne.push(array[i][0])
-                yArray.push(array[i][1])
-            } else {
-                xArray.push(array[i][0])
-                yArrayOne.push(array[i][1])
+            xArray.push(array[i][0])
+            yArray.push(array[i][1])
+        }
+
+        for(let u = 0; u < xArray.length; u++) {
+            for(let uu = 0; uu < xArray[u].length; uu++) {
+                testArrayX.push(xArray[u][uu])
             }
         }
 
-        console.log(xArrayOne)
-        console.log()
+        for(let u = 0; u < yArray.length; u++) {
+            for(let uu = 0; uu < yArray[u].length; uu++) {
+                testArrayY.push(yArray[u][uu])
+            }
+        }
+
+        
+        let valuSoFarO = []
+        for(let i = 0; i < testArrayX.length; ++i) {
+            if(valuSoFarO.indexOf(testArrayX[i]) != -1 ) {
+                tryAgain.push(true)
+            } else {
+                valuSoFarO.push(testArrayX[i])
+            }
+        }
+    
+        let valuSoFar = []
+        for(let i = 0; i < testArrayY.length; i++) {
+            if(valuSoFar.indexOf(testArrayY[i]) !== -1)  {
+                tryAgain.push(true)
+            } else {
+                valuSoFar.push(testArrayY[i])
+            }
+        }
+        if(tryAgain.length >= 2) {
+            return true
+        } else {
+            return false
+        }
     }
 
     const placeShips = () => {
@@ -102,21 +127,17 @@ const Gameboard = (size) => {
         const medium = Ship(2, 0, false)
         const large = Ship(5, 0, false)
 
-        if(verySmall.getCoordinates().length === 0) {
-            let verySmallCoord = verySmall.getNewCoordinate(verySmall)
-            let smallCoord = small.getNewCoordinate(small)
-            let mediumCoord = medium.getNewCoordinate(medium)
-            let largeCoord = large.getNewCoordinate(large)
-        }
-
-        console.log(verySmall.getCoordinates())
+        let verySmallCoord = verySmall.getNewCoordinate(verySmall)
+        let smallCoord = small.getNewCoordinate(small)
+        let mediumCoord = medium.getNewCoordinate(medium)
+        let largeCoord = large.getNewCoordinate(large)
 
         keyArray.push(verySmall.getCoordinates())
         keyArray.push(small.getCoordinates())
         keyArray.push(medium.getCoordinates())
         keyArray.push(large.getCoordinates())
 
-        checkForDuplicates(keyArray)
+        isDuplicate(keyArray)
 
         return { keyArray }
     }
