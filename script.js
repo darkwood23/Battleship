@@ -119,7 +119,7 @@ const Gameboard = (size) => {
         }
     }
 
-    const placeShips = () => {
+    const placeShips = (name) => {
         let keyArray = []
 
         const verySmall = Ship(1, 0, false)
@@ -137,9 +137,11 @@ const Gameboard = (size) => {
         keyArray.push(medium.getCoordinates())
         keyArray.push(large.getCoordinates())
 
-        isDuplicate(keyArray)
-
+        if(isDuplicate(keyArray) === true) {
+            name.placeShips(name)
+        } 
         return { keyArray }
+        
     }
     const getSize = () => size
 
@@ -150,4 +152,4 @@ export { Gameboard }
 
 
 const game = Gameboard(10)
-game.placeShips()
+console.log(game.placeShips(game))
