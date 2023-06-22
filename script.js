@@ -71,60 +71,7 @@ const Gameboard = (size) => {
     }
 
     const isDuplicate = (array) => {
-        let xArray = []
-        let yArray = []
-        let testArrayX = []
-        let testArrayY = []
-        let tryAgain = [[],[]]
-
-        for(let i = 0; i < array.length; i++) {
-            xArray.push(array[i][0])
-            yArray.push(array[i][1])
-        }
-
-        for(let u = 0; u < xArray.length; u++) {
-            for(let uu = 0; uu < xArray[u].length; uu++) {
-                testArrayX.push(xArray[u][uu])
-            }
-        }
-
-        for(let u = 0; u < yArray.length; u++) {
-            for(let uu = 0; uu < yArray[u].length; uu++) {
-                testArrayY.push(yArray[u][uu])
-            }
-        }
-
         
-        let valuSoFarO = []
-        for(let i = 0; i < testArrayX.length; ++i) {
-            if(valuSoFarO.indexOf(testArrayX[i]) !== -1 ) {
-                tryAgain[0].push(true)
-                for(let u = 0; u < testArrayY.length; ++u) {
-
-                }
-            } else {
-                valuSoFarO.push(testArrayX[i])
-            }
-        }
-    
-        let valuSoFar = []
-        for(let i = 0; i < testArrayY.length; i++) {
-            if(valuSoFar.indexOf(testArrayY[i]) !== -1)  {
-                tryAgain[1].push(true)
-            } else {
-                valuSoFar.push(testArrayY[i])
-            }
-        }
-        console.log(testArrayX)
-        console.log(testArrayY)
-        console.log(tryAgain.length)
-        console.log(tryAgain)
-        console.log(array)
-        if(tryAgain[0].length >= 2 && tryAgain[1].length >= 2) {
-            return true
-        } else {
-            return false
-        }
     }
 
     const placeShips = (name) => {
