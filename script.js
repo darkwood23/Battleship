@@ -75,7 +75,7 @@ const Gameboard = (size) => {
         let yArray = []
         let testArrayX = []
         let testArrayY = []
-        let tryAgain = []
+        let tryAgain = [[],[]]
 
         for(let i = 0; i < array.length; i++) {
             xArray.push(array[i][0])
@@ -97,8 +97,11 @@ const Gameboard = (size) => {
         
         let valuSoFarO = []
         for(let i = 0; i < testArrayX.length; ++i) {
-            if(valuSoFarO.indexOf(testArrayX[i]) != -1 ) {
-                tryAgain.push(true)
+            if(valuSoFarO.indexOf(testArrayX[i]) !== -1 ) {
+                tryAgain[0].push(true)
+                for(let u = 0; u < testArrayY.length; ++u) {
+
+                }
             } else {
                 valuSoFarO.push(testArrayX[i])
             }
@@ -107,12 +110,17 @@ const Gameboard = (size) => {
         let valuSoFar = []
         for(let i = 0; i < testArrayY.length; i++) {
             if(valuSoFar.indexOf(testArrayY[i]) !== -1)  {
-                tryAgain.push(true)
+                tryAgain[1].push(true)
             } else {
                 valuSoFar.push(testArrayY[i])
             }
         }
-        if(tryAgain.length >= 2) {
+        console.log(testArrayX)
+        console.log(testArrayY)
+        console.log(tryAgain.length)
+        console.log(tryAgain)
+        console.log(array)
+        if(tryAgain[0].length >= 2 && tryAgain[1].length >= 2) {
             return true
         } else {
             return false
@@ -137,15 +145,14 @@ const Gameboard = (size) => {
         keyArray.push(medium.getCoordinates())
         keyArray.push(large.getCoordinates())
 
-        if(isDuplicate(keyArray) === true) {
-            name.placeShips(name)
-        } 
+        
+        console.log(isDuplicate(keyArray))
         return { keyArray }
         
     }
     const getSize = () => size
 
-    return { receiveAttack, placeShips, getSize}
+    return { receiveAttack, placeShips, getSize, isDuplicate}
 }
 
 export { Gameboard }

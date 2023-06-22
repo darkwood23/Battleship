@@ -12,10 +12,10 @@ test("Gameboard places ships", () => {
 
 test("Gamboard doesn't place ships in the same place", () => {
     let board = Gameboard(10)
-    let placements = board.placeShips().keyArray
-    let placementSame = false
-    for(let i = 0; i < placements.length; i++) {
-        
-    }
+    expect(board.isDuplicate([
+        [[1,2,3], [1]],
+        [[4,5,6],[7,8]],
+        [[1,2], [8]]
+    ])).toBe(false)
     expect(placementSame).toBe(false)
 })
