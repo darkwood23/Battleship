@@ -62,20 +62,35 @@ const Ship = (long, damage, sunk) => {
 
 const Gameboard = (size) => {
     let missedShots = 0
-    const receiveAttack = (x, y, target) => {
-        if (x === target.x() && y === target.y()) {
-            target.hit()
-        } else {
-            missedShots += 1
+    const getMissedShots = () => missedShots
+    let keyArray
+
+    const receiveAttack = (x, y, name) => {
+        let hit = 0
+        let hitNotes = []
+
+        let shipNames = [name.verySmall, name.small, name.medium, name.large]
+        
+        for(let ships = 0; ships < shipNames.length; ships++) {
+            for(let i = 0; i < shipNames[ships][0].length; i++) {
+                if(shipNames[ships][0][i] === x) {
+                    hitNotes.push("shipNames[ships]")
+                    for(let u = 0; u < name.shipNames[ships][1].length; u++) {
+                        if(shipNames[ships][1][i] === y) {
+                            hit++
+                        }
+                    }
+                }
+            }
         }
+
     }
 
-    const isDuplicate = (array) => {
+    const returnTestArrays = (array) => {
         let xArray = []
         let yArray = []
         let testArrayX = []
         let testArrayY = []
-        let tryAgain = []
 
         for(let i = 0; i < array.length; i++) {
             xArray.push(array[i][0])
@@ -91,25 +106,32 @@ const Gameboard = (size) => {
         for(let u = 0; u < yArray.length; u++) {
             for(let uu = 0; uu < yArray[u].length; uu++) {
                 testArrayY.push(yArray[u][uu])
-            }
+            } 
         }
 
-        
+        return { testArrayX, testArrayY}
+    }
+
+    const isDuplicate = (array) => {
+        let tryAgain = []
+        let testX = returnTestArrays(array).testArrayX
+        let testY = returnTestArrays(array).testArrayY
+
         let valuSoFarO = []
-        for(let i = 0; i < testArrayX.length; ++i) {
-            if(valuSoFarO.indexOf(testArrayX[i]) != -1 ) {
+        for(let i = 0; i < testX.length; ++i) {
+            if(valuSoFarO.indexOf(testX[i]) != -1 ) {
                 tryAgain.push(true)
             } else {
-                valuSoFarO.push(testArrayX[i])
+                valuSoFarO.push(testX[i])
             }
         }
     
         let valuSoFar = []
-        for(let i = 0; i < testArrayY.length; i++) {
-            if(valuSoFar.indexOf(testArrayY[i]) !== -1)  {
+        for(let i = 0; i < testY.length; i++) {
+            if(valuSoFar.indexOf(testY[i]) !== -1)  {
                 tryAgain.push(true)
             } else {
-                valuSoFar.push(testArrayY[i])
+                valuSoFar.push(testY[i])
             }
         }
         if(tryAgain.length >= 2) {
@@ -120,7 +142,7 @@ const Gameboard = (size) => {
     }
 
     const placeShips = (name) => {
-        let keyArray = []
+        keyArray = []
 
         const verySmall = Ship(1, 0, false)
         const small = Ship(3, 0, false)
@@ -139,17 +161,27 @@ const Gameboard = (size) => {
 
         if(isDuplicate(keyArray) === true) {
             name.placeShips(name)
-        } 
-        return { keyArray }
+        }
+
+        let keyDict = {
+            verySmall: verySmall.getCoordinates(),
+            small: small.getCoordinates(),
+            medium: medium.getCoordinates(),
+            large: large.getCoordinates(),
+        }
+
+        return { keyArray, keyDict }
         
     }
     const getSize = () => size
 
-    return { receiveAttack, placeShips, getSize}
+    return { receiveAttack, placeShips, getSize, isDuplicate, getMissedShots}
 }
 
 export { Gameboard }
 
-
 const game = Gameboard(10)
-console.log(game.placeShips(game))
+let ships = game.placeShips(game)
+console.log(ships)
+game.receiveAttack(3, 5, ships.keyDict)
+console.log(game.getMissedShots())
