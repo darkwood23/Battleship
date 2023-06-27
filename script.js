@@ -1,11 +1,16 @@
 const Ship = (long, damage, sunk) => {
     let masterArray = []
     const getCoordinates = () => {return masterArray}
-    const hit = () => { damage += 1 }
-    const isSunk = () => { if (long === damage) { sunk = true } }
+    const hit = () => {
+        if(damage < long) {
+            damage += 1;
+            isSunk() 
+        } 
+        
+    }
+    const isSunk = () => { if (long === damage) { sunk = true; return sunk } }
     const getLong = () => long
     const getDamage = () => damage
-    const getSunk = () => sunk
     const x = (name) => { 
         let xArray = []
         let choice = Math.floor(Math.random() * 2)
@@ -57,7 +62,7 @@ const Ship = (long, damage, sunk) => {
         return masterArray
     }
     
-    return { hit, isSunk, getDamage, getLong, getSunk, getNewCoordinate, x, getCoordinates } 
+    return { hit, isSunk, getDamage, getLong, getNewCoordinate, x, getCoordinates } 
 }
 
 const Gameboard = (size) => {
@@ -67,22 +72,37 @@ const Gameboard = (size) => {
 
     const receiveAttack = (x, y, name) => {
         let hit = 0
-        let hitNotes = []
+        let hitNotes
 
         let shipNames = [name.verySmall, name.small, name.medium, name.large]
-        
         for(let ships = 0; ships < shipNames.length; ships++) {
-            for(let i = 0; i < shipNames[ships][0].length; i++) {
+            for(let i = 0; i < shipNames[ships][0][0].length; i++) {
                 if(shipNames[ships][0][i] === x) {
-                    hitNotes.push("shipNames[ships]")
-                    for(let u = 0; u < name.shipNames[ships][1].length; u++) {
+                    for(let u = 0; u < shipNames[ships][0][1].length; u++) {
                         if(shipNames[ships][1][i] === y) {
                             hit++
+                            hitNotes=shipNames[ships]
                         }
                     }
                 }
             }
         }
+        for(let i = 0; i < shipNames.length; i++) {
+            if(shipNames[i][1] === hitNotes) {
+                shipNames[i][1].hit()
+                if(shipNames[i][1].isSunk() === true) {
+                    console.log("Ship has been sunk")
+                }
+            }
+        }
+
+        if(hit === 0) {
+            missedShots++
+            return false
+        } else {
+            return true
+        }
+
 
     }
 
@@ -164,10 +184,10 @@ const Gameboard = (size) => {
         }
 
         let keyDict = {
-            verySmall: verySmall.getCoordinates(),
-            small: small.getCoordinates(),
-            medium: medium.getCoordinates(),
-            large: large.getCoordinates(),
+            verySmall: [verySmall.getCoordinates(), verySmall],
+            small: [small.getCoordinates(), small],
+            medium: [medium.getCoordinates(), medium],
+            large: [large.getCoordinates(), large],
         }
 
         return { keyArray, keyDict }
@@ -180,8 +200,21 @@ const Gameboard = (size) => {
 
 export { Gameboard }
 
-const game = Gameboard(10)
-let ships = game.placeShips(game)
+// const game = Gameboard(10)
+// let ships = game.placeShips(game)
+// console.log(ships)
+// console.log(game.receiveAttack(3, 5, ships.keyDict))
+// console.log(game.receiveAttack(4, 2, ships.keyDict))
+// console.log(game.getMissedShots())
+
+
+const Player1 = Gameboard(10)
+let ships = Player1.placeShips(Player1)
 console.log(ships)
-game.receiveAttack(3, 5, ships.keyDict)
-console.log(game.getMissedShots())
+console.log(Player1.receiveAttack(3, 5, ships.keyDict))
+
+
+const Player2 = Gameboard(10)
+let shipsTwo = Player2.placeShips(Player2)
+console.log(shipsTwo)
+console.log(Player2.receiveAttack(6, 7, shipsTwo.keyDict))
