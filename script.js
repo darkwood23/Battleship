@@ -88,9 +88,14 @@ const Gameboard = (size) => {
             }
         }
         for(let i = 0; i < shipNames.length; i++) {
+            
             if(shipNames[i][1] === hitNotes) {
                 shipNames[i][1].hit()
+
                 if(shipNames[i][1].isSunk() === true) {
+                    if(win(shipNames) === true) {
+                        return "You have won the game"
+                    }
                     console.log("Ship has been sunk")
                 }
             }
@@ -104,6 +109,19 @@ const Gameboard = (size) => {
         }
 
 
+    }
+
+    const win = (array) => {
+        let newArray = []
+        for(let i = 0; i < array.length; i++) {
+            if(array[i][1].isSunk() === true) {
+                newArray.push(true)
+            }
+        }
+
+        if(newArray.length === array.length) {
+            return true
+        }
     }
 
     const returnTestArrays = (array) => {
