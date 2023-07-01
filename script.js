@@ -243,6 +243,7 @@ const ai = (target, targetCood) => {
 
 export { Gameboard }
 
+// Example code
 
 const Player1 = Gameboard(10)
 let ships = Player1.placeShips(Player1)
