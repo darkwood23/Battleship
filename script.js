@@ -216,14 +216,32 @@ const Gameboard = (size) => {
     return { receiveAttack, placeShips, getSize, isDuplicate, getMissedShots}
 }
 
-export { Gameboard }
+const ai = (target, targetCood) => {
+    let spots = []
+    const aiPlayer = Gameboard(10)
+    let ships = aiPlayer.placeShips(aiPlayer)
+    console.log(ships)
 
-// const game = Gameboard(10)
-// let ships = game.placeShips(game)
-// console.log(ships)
-// console.log(game.receiveAttack(3, 5, ships.keyDict))
-// console.log(game.receiveAttack(4, 2, ships.keyDict))
-// console.log(game.getMissedShots())
+    let randomChoice1 = Math.floor(Math.random() * 10)
+    let randomChoice2 = Math.floor(Math.random() * 10)
+    spots.push([randomChoice1, randomChoice2])
+    let spot = target.receiveAttack(randomChoice1, randomChoice2, targetCood)
+    console.log(spot)
+
+    while (spot) {
+        if(1 < randomChoice1 < 10) {
+            spot = target.receiveAttack(randomChoice1 + 1, randomChoice2, targetCood)
+        } else if (1 < randomChoice2 < 10) {
+            spot = target.receiveAttack(randomChoice1, randomChoice2 + 1, targetCood)
+        } else if (randomChoice1 === 10 && randomChoice2 === 10) {
+            spot = target.receiveAttack(randomChoice1 - 1, randomChoice2, targetCood)
+        } else {
+            spot = target.receiveAttack(randomChoice1 - 1, randomChoice2 - 1 , targetCood)
+        }
+    }
+}
+
+export { Gameboard }
 
 
 const Player1 = Gameboard(10)
@@ -232,7 +250,4 @@ console.log(ships)
 console.log(Player1.receiveAttack(3, 5, ships.keyDict))
 
 
-const Player2 = Gameboard(10)
-let shipsTwo = Player2.placeShips(Player2)
-console.log(shipsTwo)
-console.log(Player2.receiveAttack(6, 7, shipsTwo.keyDict))
+const aiP = ai(Player1, ships.keyDict)
